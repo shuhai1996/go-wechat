@@ -1,0 +1,21 @@
+version: v1
+plugins:
+  # protoc-gen-go needs to be installed, generate go files based on proto files
+  - name: go
+    out: .
+    opt:
+      - paths=source_relative
+  # protoc-gen-go-grpc needs to be installed, generate grpc go files based on proto files
+  - name: go-grpc
+    out: .
+    opt:
+      - paths=source_relative
+      - require_unimplemented_servers=false
+  # protoc-gen-grpc-gateway needs to be installed, generate grpc-gateway go files based on proto files
+  - name: grpc-gateway
+    out: .
+    opt:
+      - paths=source_relative
+      - generate_unbound_methods=true
+  - name: openapiv2
+    out: ./apiv2

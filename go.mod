@@ -7,7 +7,9 @@ require (
 	github.com/gorilla/websocket v1.4.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0
 	github.com/satori/go.uuid v1.2.0
+	github.com/thedevsaddam/gojsonq v2.3.0+incompatible
 	github.com/ugjka/messenger v1.1.3
+	github.com/verystar/ini v1.1.0
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 	nhooyr.io/websocket v1.8.7

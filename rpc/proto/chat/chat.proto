@@ -1,0 +1,39 @@
+syntax = "proto3";
+option go_package = "rpc/proto/chat";
+
+package chat;
+
+service ChatService {
+  rpc SendMessage(Message) returns (Response) {}
+  rpc JoinRoom(JoinRequest) returns (Response) {}
+  rpc LeaveRoom(LeaveRequest) returns (Response) {}
+  rpc GetUserInfo(UserInfoRequest) returns (UserInfo) {}
+}
+
+message Message {
+  int32 userid= 1;
+  string text = 2;
+  int32 room_id =3;
+}
+
+message JoinRequest {
+  string username = 1;
+}
+
+message LeaveRequest {
+  string username = 1;
+}
+
+message Response {
+  string text = 1;
+}
+
+message UserInfo {
+  string name = 1;
+  int32 count = 2;
+  // 其他用户信息字段
+}
+
+message UserInfoRequest {
+  string name = 1;
+}

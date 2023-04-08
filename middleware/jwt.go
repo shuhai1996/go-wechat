@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/satori/go.uuid"
+	"go-wechat/config"
 )
 
 // CustomClaims 自定义声明
@@ -21,13 +22,9 @@ type User struct {
 	Username string `json:"username"`
 	Nickname string `json:"nickname"`
 }
-
-var secret = "###########"
-
-
 // JwtAuth 后台鉴权中间件
 func JwtAuth(jwtS string) (user *User, err error){
-
+	var secret = config.Get("jwt.secret")
 	if jwtS == "" {
 		err = fmt.Errorf("empty token")
 		return
@@ -47,7 +44,6 @@ func JwtAuth(jwtS string) (user *User, err error){
 	if err != nil {
 		return
 	}
-	fmt.Println(claims)
 
 	return &User{
 		Username: claims.Username,
