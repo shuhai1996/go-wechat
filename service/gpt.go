@@ -32,7 +32,7 @@ func (GptServices) GetText(str string) string {
 	}
 	gq := gojsonq.New().FromString(string(d))
 	district := gq.Find("choices.[0].message.content")
-	if district != nil {
+	if district == nil {
 		return "Remote API returns error."
 	}
 	return district.(string)
