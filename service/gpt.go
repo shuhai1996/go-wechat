@@ -28,11 +28,13 @@ type GptServices struct {
 func (GptServices) GetText(str string) string {
 	d, err := PostJsonWithHeaders(str)
 	if err != nil {
-		return ""
+		return err.Error()
 	}
 	gq := gojsonq.New().FromString(string(d))
 	district := gq.Find("choices.[0].message.content")
-
+	if district != nil {
+		return "Remote API returns error."
+	}
 	return district.(string)
 }
 
@@ -56,7 +58,7 @@ func PostJsonWithHeaders(str string) (b []byte, e error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		// handle error
-
+		e = err
 		return
 	}
 	defer resp.Body.Close()

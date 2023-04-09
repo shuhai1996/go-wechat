@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"go-wechat/config"
@@ -30,7 +29,6 @@ type Response struct {
 var sev = &service.GptServices{}
 
 func wsHandler(w http.ResponseWriter, r *http.Request) {
-	var addr = flag.String("addr", config.Get("rpc.url"), "the address to connect to")
 	// 校验请求头部信息
 	authHeader := r.Header.Get("Sec-WebSocket-Protocol")
 	fmt.Println(authHeader)
@@ -52,7 +50,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("client connected!")
 
-	rpcConn, re := grpc.Dial(*addr, grpc.WithInsecure())
+	rpcConn, re := grpc.Dial(config.Get("rpc.url"), grpc.WithInsecure())
 	if re != nil {
 		log.Println("dialing" + re.Error())
 	}
