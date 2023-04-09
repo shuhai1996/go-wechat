@@ -6,6 +6,7 @@ import (
 	"github.com/thedevsaddam/gojsonq"
 	"go-wechat/config"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -64,6 +65,6 @@ func PostJsonWithHeaders(str string) (b []byte, e error) {
 	defer resp.Body.Close()
 
 	b, e = ioutil.ReadAll(resp.Body)
-
+	log.Println(string(b))
 	return
 }
