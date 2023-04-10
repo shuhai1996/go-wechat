@@ -52,7 +52,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	rpcConn, re := grpc.Dial(config.Get("rpc.url"), grpc.WithInsecure())
 	if re != nil {
-		log.Println("dialing" + re.Error())
+		log.Println("dialing rpc " + re.Error())
 	}
 	fmt.Println(rpcConn.GetState())
 
@@ -105,6 +105,7 @@ func writeResponseMessage(user *middleware.User, p []byte, isConnect bool, rpcCo
 			Username: user.Nickname,
 			Message: response,
 		}
+		client.SendMessage(rpcConn, 0, response, 0)
 	}
 
 	bytes,_ := json.Marshal(data)
