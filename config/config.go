@@ -11,7 +11,7 @@ var env string
 
 func Setup(environment string) {
 	var err error
-	cfg, err = ini.Load("../conf.ini")
+	cfg, err = ini.Load("conf.ini")
 	if err != nil {
 		log.Fatalln(err)
 	}
