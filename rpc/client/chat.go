@@ -19,7 +19,7 @@ func GetChatUserInfo(conn *grpc.ClientConn, name string) int {
 	if err != nil {
 		log.Printf("could not greet: %v", err)
 	}
-	log.Printf("Name: %s Count: %v", r.GetName(), r.GetCount())
+	log.Printf("Name: %v Count: %v", r.GetName(), r.GetCount())
 
 	return int(r.GetCount())
 }

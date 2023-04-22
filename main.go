@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"go-wechat/config"
 	"go-wechat/middleware"
@@ -25,7 +24,6 @@ var sev = &service.GptServices{}
 func wsHandler(w http.ResponseWriter, r *http.Request) {
 	// 校验请求头部信息
 	authHeader := r.Header.Get("Sec-WebSocket-Protocol")
-	fmt.Println(authHeader)
 	user, err := middleware.JwtAuth(authHeader)
 	if err != nil{
 		log.Println(err)
@@ -96,10 +94,10 @@ func writeResponseMessage(conn *websocket.Conn, user *middleware.User, p []byte,
 		client.SendMessage(rpcConn, user.ID, text, 0)
 		er, response := sev.GetStream(user, conn, text)
 		if er != nil {
-			response = er.Error()
+			log.Println("Stream error:"+ er.Error())
 			return
 		}
-
+		log.Println("Stream finished:"+response)
 		client.SendMessage(rpcConn, 0, response, 0)
 	}
 
