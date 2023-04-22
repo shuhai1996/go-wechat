@@ -33,7 +33,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//user := &middleware.User{}
 	header := make(http.Header)
 	header.Set("Sec-WebSocket-Protocol", authHeader)
 	conn, err := upgrader.Upgrade(w, r, header)
@@ -48,8 +47,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 	if re != nil {
 		log.Println("dialing rpc " + re.Error())
 	}
-	log.Println(rpcConn.GetState())
-
 
 	defer conn.Close()
 	defer rpcConn.Close()
@@ -102,12 +99,6 @@ func writeResponseMessage(conn *websocket.Conn, user *middleware.User, p []byte,
 			response = er.Error()
 			return
 		}
-		//time.Sleep(2000 * time.Millisecond)
-		//data = &Response{
-		//	Type: "customer",
-		//	Username: user.Nickname,
-		//	Message: "以下是一个简单的Go语言爬虫程序，用于爬取指定网站的所有链接：\n\n```go\npackage main\n\nimport (\n    \"fmt\"\n    \"net/http\"\n    \"io/ioutil\"\n    \"regexp\"\n)\n\nfunc main() {\n    url := \"https://www.example.com\"\n    visited := make(map[string]bool)\n    crawl(url, visited)\n}\n\nfunc crawl(url string, visited map[string]bool) {\n    if visited[url] {\n        return\n    }\n    visited[url] = true\n    fmt.Println(\"Crawling:\", url)\n    resp, err := http.Get(url)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n        return\n    }\n    defer resp.Body.Close()\n    body, err := ioutil.ReadAll(resp.Body)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n        return\n    }\n    re := regexp.MustCompile(`<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*)\"`)\n    matches := re.FindAllStringSubmatch(string(body), -1)\n    for _, match := range matches {\n        link := match[1]\n        if len(link) == 0 || link[0] == '#' {\n            continue\n        }\n        if link[0] == '/' {\n            link = url + link\n        }\n        crawl(link, visited)\n    }\n}\n```\n\n该程序使用了Go语言的标准库中的http和regexp包，通过正则表达式匹配页面中的链接，并递归爬取所有链接。在爬取过程中，使用了一个visited map来记录已经访问过的链接，避免重复访问。",
-		//}
 
 		client.SendMessage(rpcConn, 0, response, 0)
 	}

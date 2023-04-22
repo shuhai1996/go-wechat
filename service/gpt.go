@@ -60,17 +60,14 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 	stream, er := client.CreateChatCompletionStream(context.Background(), req)
 	if er != nil {
 		err = er
-		fmt.Printf("ChatCompletionStream error: %v\n", err)
+		log.Printf("ChatCompletionStream error: %v\n", err)
 		return
 	}
 	defer stream.Close()
 
-	fmt.Printf("Stream response: ")
 	for {
 		response, er := stream.Recv()
 		if errors.Is(er, io.EOF) {
-			fmt.Println("\nStream finished")
-			fmt.Println("\nStream finished")
 			data := &socket.Response{
 				Type:     "customer",
 				Username: user.Nickname,
@@ -79,7 +76,7 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 
 			bytes, e := json.Marshal(data)
 			if e != nil {
-				fmt.Printf("\njson decode error: %v\n", err)
+				log.Printf("\njson decode error: %v\n", err)
 				err = e
 				return
 			}
@@ -90,7 +87,7 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 		}
 
 		if er != nil {
-			fmt.Printf("\nStream error: %v\n", err)
+			log.Printf("\nStream error: %v\n", err)
 
 			data := &socket.Response{
 				Type:     "customer",
@@ -100,7 +97,7 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 
 			bytes, e := json.Marshal(data)
 			if e != nil {
-				fmt.Printf("\njson decode error: %v\n", err)
+				log.Printf("\njson decode error: %v\n", err)
 				err = e
 				return
 			}
@@ -111,7 +108,6 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 		}
 
 		re := response.Choices[0].Delta.Content
-		log.Println(response)
 
 		data := &socket.Response{
 			Type:     "customer",
@@ -127,7 +123,7 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 		}
 
 		_ = conn.WriteMessage(websocket.TextMessage, bytes)
-		fmt.Println(re)
+		log.Println("Stream finished:"+re)
 		res += re
 	}
 }
