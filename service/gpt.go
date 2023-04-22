@@ -123,7 +123,6 @@ func (GptServices) GetStream(user *middleware.User, conn *websocket.Conn, str st
 		}
 
 		_ = conn.WriteMessage(websocket.TextMessage, bytes)
-		log.Println("Stream finished:"+re)
 		res += re
 	}
 }
